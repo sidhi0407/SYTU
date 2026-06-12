@@ -1,0 +1,80 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#061530;
+    color:white;
+    font-family:'Segoe UI',sans-serif;
+    zoom:55%;
+}
+
+.container{
+    padding:30px 40px;
+}
+
+.container h1{
+    font-size:60px;
+    margin-bottom:5px;
+}
+
+.container h2{
+    font-size:22px;
+    margin-bottom:35px;
+}
+
+.login-card{
+    background:#1c2b47;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    width:100%;
+
+    max-width:1700px;
+}
+
+.login-card h3{
+    font-size:40px;
+
+    margin-bottom:20px;
+}
+
+.login-card input{
+    width:100%;
+
+    padding:18px;
+
+    margin-bottom:20px;
+
+    border:none;
+
+    border-radius:12px;
+
+    font-size:20px;
+}
+
+.login-card button{
+    background:#2563eb;
+
+    color:white;
+
+    border:none;
+
+    padding:15px 30px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    transition:0.3s;
+}
+
+.login-card button:hover{
+    background:#1d4ed8;
+}
