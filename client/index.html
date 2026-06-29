@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYTU - Professional Portfolio & Collaboration Hub</title>
+    <!-- Google Font & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Glassmorphic Style -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Socket.IO Client CDN -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+</head>
+<body>
+
+    <!-- ================= AUTH CONTAINER (LANDING PAGE) ================= -->
+    <div id="authContainer" class="container">
+        <div class="left-section">
+            <div class="brand-badge"><i class="fa-solid fa-network-wired"></i> SYTU Platform</div>
+            <h1>SYTU</h1>
+            <h2>Connect. Build. Collaborate.</h2>
+            <p>
+                The subscription-based professional networking and portfolio builder designed for developers, designers, and innovators. Showcase your work, sync your GitHub, and discover collaborators.
+            </p>
+            <div class="pricing-card-promo">
+                <h3>₹49/month</h3>
+                <p>Get premium discovery feeds, advanced skill filters, and unlimited collaboration board posts.</p>
+            </div>
+        </div>
+
+        <div class="right-section">
+            <!-- Login Card -->
+            <div id="loginCard" class="login-card">
+                <h3>Welcome Back</h3>
+                <p class="subtitle">Login to access your dashboard</p>
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="loginEmail" placeholder="Email Address" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                </div>
+                <button id="loginBtn" class="primary-btn">Login <i class="fa-solid fa-arrow-right-to-bracket"></i></button>
+                <p class="toggle-auth">Don't have an account? <span id="showRegister">Register</span></p>
+            </div>
+
+            <!-- Register Card -->
+            <div id="registerCard" class="login-card hidden">
+                <h3>Create Account</h3>
+                <p class="subtitle">Join the SYTU professional network</p>
+                <div class="input-group">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="regName" placeholder="Full Name" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-at"></i>
+                    <input type="text" id="regUsername" placeholder="Choose Username" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="regEmail" placeholder="Email Address" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="regPassword" placeholder="Password" required>
+                </div>
+                <button id="registerBtn" class="primary-btn">Sign Up <i class="fa-solid fa-user-plus"></i></button>
+                <p class="toggle-auth">Already have an account? <span id="showLogin">Login</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MAIN APP CONTAINER (DASHBOARD) ================= -->
+    <div id="appContainer" class="dashboard-container hidden">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fa-solid fa-network-wired"></i>
+                <span>SYTU Hub</span>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="#" class="menu-item active" data-view="discovery"><i class="fa-solid fa-compass"></i> Discover</a>
+                <a href="#" class="menu-item" data-view="connections"><i class="fa-solid fa-users"></i> Connections <span id="pendingBadge" class="badge-count hidden">0</span></a>
+                <a href="#" class="menu-item" data-view="chat"><i class="fa-solid fa-comments"></i> Chat <span id="chatBadge" class="badge-count hidden">0</span></a>
+                <a href="#" class="menu-item" data-view="portfolio"><i class="fa-solid fa-id-card"></i> Portfolio</a>
+                <a href="#" class="menu-item" data-view="projects"><i class="fa-solid fa-folder-open"></i> Projects</a>
+                <a href="#" class="menu-item" data-view="collaboration"><i class="fa-solid fa-handshake"></i> Collab Hub</a>
+                <a href="#" class="menu-item" data-view="subscription"><i class="fa-solid fa-credit-card"></i> Subscription</a>
+                <a href="#" class="menu-item admin-only hidden" data-view="admin"><i class="fa-solid fa-shield-halved"></i> Admin Console</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-chip">
+                    <img id="userAvatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&h=80" alt="Avatar">
+                    <div class="user-info">
+                        <span id="userChipName">User Name</span>
+                        <span id="userChipRole">Developer</span>
+                    </div>
+                </div>
+                <button id="logoutBtn" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Workspace Area -->
+        <main class="main-content">
+            <!-- Header bar -->
+            <header class="top-bar">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="globalSearchInput" placeholder="Search profiles, skills, interests...">
+                </div>
+                
+                <div class="header-actions">
+                    <!-- Notification Bell -->
+                    <div class="notification-bell" id="notifBell">
+                        <i class="fa-solid fa-bell"></i>
+                        <span id="notifCount" class="badge-count hidden">0</span>
+                        
+                        <!-- Notifications Dropdown -->
+                        <div class="notif-dropdown hidden" id="notifDropdown">
+                            <div class="dropdown-header">
+                                <span>Notifications</span>
+                                <button id="markAllReadBtn">Clear All</button>
+                            </div>
+                            <div class="dropdown-list" id="notifList">
+                                <p class="empty-list">No new notifications</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Active View Container -->
+            <section class="view-content" id="activeViewContent">
+                <!-- Content injected dynamically via JavaScript -->
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notification Banner -->
+    <div id="toastBanner" class="toast-banner hidden">
+        <i class="fa-solid fa-circle-info"></i>
+        <span id="toastMessage">Alert Notification!</span>
+    </div>
+
+    <!-- Script loading -->
+    <script src="js/app.js"></script>
+</body>
+</html>
