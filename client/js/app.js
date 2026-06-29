@@ -23,9 +23,7 @@ const state = {
 };
 
 // Host detection for API endpoint base
-const API_BASE = window.location.origin.includes("file://")
-    ? "http://localhost:5000/api"
-    : "/api";
+const API_BASE = "https://sytu.onrender.com/api";
 
 // Initialize Application
 document.addEventListener("DOMContentLoaded", () => {
@@ -260,7 +258,7 @@ function enterApplication() {
 // Socket.IO event mapping
 function connectSocketServer() {
     // Connect socket bound to host
-    const socketUrl = window.location.origin.includes("file://") ? "http://localhost:5000" : undefined;
+    const socketUrl = "https://sytu.onrender.com";
     state.socket = io(socketUrl, {
         auth: { token: state.accessToken }
     });
